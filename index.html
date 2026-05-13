@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dakar Food</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .hero {
+            background:
+                linear-gradient(to right, rgba(0, 0, 0, .9), rgba(0, 0, 0, .3)),
+                url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1600&auto=format&fit=crop');
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- HERO -->
+    <header class="hero min-h-screen text-white">
+
+        <!-- NAVBAR -->
+        <nav id="navbar"
+    class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 lg:px-20 py-6 bg-black/80 backdrop-blur-md">
+
+    <div>
+        <h1 class="text-2xl font-bold text-orange-500">
+            Dakar Food
+        </h1>
+
+        <p class="text-sm text-gray-300">
+            Restaurant & Café
+        </p>
+    </div>
+
+    <ul class="hidden md:flex gap-10 font-semibold text-white">
+
+        <li>
+            <a href="#menu" class="hover:text-orange-400 transition">
+                Menu
+            </a>
+        </li>
+
+        <li>
+            <a href="#apropos" class="hover:text-orange-400 transition">
+                A propos
+            </a>
+        </li>
+
+        <li>
+            <a href="#contact" class="hover:text-orange-400 transition">
+                Contact
+            </a>
+        </li>
+
+    </ul>
+
+    <!-- PANIER -->
+    <button onclick="toggleCart()"
+        class="relative border border-orange-500 text-orange-500 px-6 py-3 rounded-full hover:bg-orange-500 hover:text-white transition font-semibold">
+
+        🛒 Panier
+
+        <span id="cart-count"
+            class="hidden absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+
+            0
+        </span>
+
+    </button>
+
+</nav>
+
+        <!-- HERO CONTENT -->
+        <section class="px-6 lg:px-20 py-20 flex flex-col lg:flex-row items-center justify-between gap-10">
+
+            <div class="max-w-xl">
+
+                <p class="text-orange-400 text-3xl italic mb-4">
+                    Bon Appétit !
+                </p>
+
+                <h2 class="text-5xl lg:text-7xl font-black leading-tight">
+                    Découvrez <br> Notre Menu
+                </h2>
+
+                <p class="text-gray-300 mt-6 text-lg">
+                    Savourez des plats délicieux préparés avec amour.
+                </p>
+
+                <div class="flex gap-4 mt-10">
+
+                    <a href="#menu">
+                        <button class="bg-orange-500 px-8 py-4 rounded-full font-bold hover:bg-orange-600 transition">
+                            Voir le Menu
+                        </button>
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div>
+
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=900&auto=format&fit=crop"
+                    class="w-[500px] rounded-2xl">
+
+            </div>
+
+        </section>
+
+    </header>
+
+    <!-- PANIER -->
+    <div id="cart-panel" class="hidden fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 flex flex-col p-6">
+
+        <div class="flex justify-between items-center mb-6">
+
+            <h2 class="text-2xl font-black">
+                🛒 Mon Panier
+            </h2>
+
+            <button onclick="toggleCart()" class="text-2xl font-bold">
+                ✕
+            </button>
+
+        </div>
+
+        <!-- ARTICLES -->
+        <div id="cart-items" class="flex-1 overflow-y-auto space-y-4">
+
+            <p class="text-gray-400 text-center mt-10">
+                Votre panier est vide
+            </p>
+
+        </div>
+
+        <!-- TOTAL -->
+        <div class="border-t pt-4 mt-4">
+
+            <div class="flex justify-between text-xl font-bold mb-4">
+
+                <span>Total :</span>
+
+                <span id="cart-total" class="text-orange-500">
+                    0 FCFA
+                </span>
+
+            </div>
+
+            <button onclick="commander()"
+                class="w-full bg-orange-500 text-white py-4 rounded-full font-bold hover:bg-orange-600 transition">
+
+                Commander →
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- OVERLAY -->
+    <div id="cart-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40" onclick="toggleCart()">
+    </div>
+
+    <!-- CATÉGORIES -->
+    <section class="max-w-6xl mx-auto -mt-20 relative z-10 px-4">
+
+        <div class="bg-white rounded-3xl shadow-xl grid grid-cols-2 md:grid-cols-5 gap-6 p-8">
+
+            <div onclick="filtrerMenu('burger')" class="text-center cursor-pointer hover:text-orange-500 transition">
+
+                <div class="text-4xl">🍔</div>
+
+                <h3 class="font-bold mt-2">
+                    Burgers
+                </h3>
+
+            </div>
+
+            <div onclick="filtrerMenu('pizza')" class="text-center cursor-pointer hover:text-orange-500 transition">
+
+                <div class="text-4xl">🍕</div>
+
+                <h3 class="font-bold mt-2">
+                    Pizzas
+                </h3>
+
+            </div>
+
+            <div onclick="filtrerMenu('plat')" class="text-center cursor-pointer hover:text-orange-500 transition">
+
+                <div class="text-4xl">🍽️</div>
+
+                <h3 class="font-bold mt-2">
+                    Plats
+                </h3>
+
+            </div>
+
+            <div onclick="filtrerMenu('boisson')" class="text-center cursor-pointer hover:text-orange-500 transition">
+
+                <div class="text-4xl">🥤</div>
+
+                <h3 class="font-bold mt-2">
+                    Boissons
+                </h3>
+
+            </div>
+
+            <div onclick="filtrerMenu('all')" class="text-center cursor-pointer hover:text-orange-500 transition">
+
+                <div class="text-4xl">🍱</div>
+
+                <h3 class="font-bold mt-2">
+                    Tous
+                </h3>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- MENU -->
+    <section id="menu" class="py-24 px-6">
+
+        <div class="text-center">
+
+            <p class="text-orange-500 italic text-2xl">
+                Nos spécialités
+            </p>
+
+            <h2 class="text-5xl font-black mt-2">
+                Notre Menu
+            </h2>
+
+        </div>
+
+        <!-- GRID -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mt-16">
+
+            <!-- BURGER -->
+            <div class="bg-white rounded-3xl overflow-hidden shadow-lg transition duration-300 card"
+                data-category="burger">
+
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1200&auto=format&fit=crop"
+                    class="h-60 w-full object-cover">
+
+                <div class="p-6">
+
+                    <div class="flex justify-between items-center">
+
+                        <h3 class="text-2xl font-bold">
+                            Burger Classique
+                        </h3>
+
+                        <span class="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold">
+                            3 500 FCFA
+                        </span>
+
+                    </div>
+
+                    <p class="text-gray-500 mt-4">
+                        Steak haché, fromage et tomate.
+                    </p>
+
+                    <button
+                        class="add-to-cart mt-6 border border-orange-500 text-orange-500 px-6 py-3 rounded-full hover:bg-orange-500 hover:text-white transition"
+                        data-name="Burger Classique" data-price="3500">
+
+                        🛒 Commander
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- PIZZA -->
+            <div class="bg-white rounded-3xl overflow-hidden shadow-lg transition duration-300 card"
+                data-category="pizza">
+
+                <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1200&auto=format&fit=crop"
+                    class="h-60 w-full object-cover">
+
+                <div class="p-6">
+
+                    <div class="flex justify-between items-center">
+
+                        <h3 class="text-2xl font-bold">
+                            Pizza Margherita
+                        </h3>
+
+                        <span class="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold">
+                            5 000 FCFA
+                        </span>
+
+                    </div>
+
+                    <p class="text-gray-500 mt-4">
+                        Sauce tomate et mozzarella.
+                    </p>
+
+                    <button
+                        class="add-to-cart mt-6 border border-orange-500 text-orange-500 px-6 py-3 rounded-full hover:bg-orange-500 hover:text-white transition"
+                        data-name="Pizza Margherita" data-price="5000">
+
+                        🛒 Commander
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- THIEB -->
+            <div class="bg-white rounded-3xl overflow-hidden shadow-lg transition duration-300 card"
+                data-category="plat">
+
+                <img src="https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?q=80&w=1200&auto=format&fit=crop"
+                    class="h-60 w-full object-cover">
+
+                <div class="p-6">
+
+                    <div class="flex justify-between items-center">
+
+                        <h3 class="text-2xl font-bold">
+                            Thiéboudienne
+                        </h3>
+
+                        <span class="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold">
+                            3 000 FCFA
+                        </span>
+
+                    </div>
+
+                    <p class="text-gray-500 mt-4">
+                        Riz au poisson sénégalais.
+                    </p>
+
+                    <button
+                        class="add-to-cart mt-6 border border-orange-500 text-orange-500 px-6 py-3 rounded-full hover:bg-orange-500 hover:text-white transition"
+                        data-name="Thiéboudienne" data-price="3000">
+
+                        🛒 Commander
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+    <!-- ========== À PROPOS ========== -->
+    <section id="apropos" class="py-20 px-6 bg-white">
+
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+
+            <!-- IMAGE -->
+            <div class="relative">
+
+                <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=1200&auto=format&fit=crop"
+                    alt="Restaurant Dakar Food" class="rounded-3xl shadow-2xl w-full h-[500px] object-cover">
+
+                <div class="absolute bottom-6 left-6 bg-orange-500 text-white px-6 py-4 rounded-2xl shadow-xl">
+
+                    <h3 class="text-3xl font-black">
+                        5+
+                    </h3>
+
+                    <p class="font-semibold">
+                        Années d’expérience
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- TEXTE -->
+            <div>
+
+                <p class="text-orange-500 italic text-2xl mb-4">
+                    Notre histoire
+                </p>
+
+                <h2 class="text-5xl font-black leading-tight">
+                    Bienvenue chez <br>
+                    Dakar Food
+                </h2>
+
+                <p class="text-gray-500 mt-8 text-lg leading-relaxed">
+                    Dakar Food est un restaurant moderne spécialisé dans les plats sénégalais
+                    et la restauration rapide. Notre mission est de proposer des repas
+                    délicieux, préparés avec des ingrédients frais et de qualité.
+                </p>
+
+                <p class="text-gray-500 mt-6 text-lg leading-relaxed">
+                    Nous mélangeons les saveurs locales et internationales pour offrir une
+                    expérience unique à nos clients. Chaque plat est préparé avec passion
+                    afin de garantir goût, qualité et satisfaction.
+                </p>
+
+                <!-- STATISTIQUES -->
+                <div class="grid grid-cols-3 gap-6 mt-10">
+
+                    <div class="bg-gray-100 rounded-2xl p-6 text-center">
+
+                        <h3 class="text-4xl font-black text-orange-500">
+                            200+
+                        </h3>
+
+                        <p class="text-gray-600 mt-2 font-semibold">
+                            Clients / Jour
+                        </p>
+
+                    </div>
+
+                    <div class="bg-gray-100 rounded-2xl p-6 text-center">
+
+                        <h3 class="text-4xl font-black text-orange-500">
+                            50+
+                        </h3>
+
+                        <p class="text-gray-600 mt-2 font-semibold">
+                            Menus disponibles
+                        </p>
+
+                    </div>
+
+                    <div class="bg-gray-100 rounded-2xl p-6 text-center">
+
+                        <h3 class="text-4xl font-black text-orange-500">
+                            100%
+                        </h3>
+
+                        <p class="text-gray-600 mt-2 font-semibold">
+                            Produits frais
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- BOUTON -->
+                <a href="#menu"><button
+                    class="mt-10 bg-orange-500 text-white px-8 py-4 rounded-full font-bold hover:bg-orange-600 transition">
+
+                    Découvrir notre menu →
+
+                </button></a>
+
+            </div>
+
+        </div>
+
+    </section>
+    <!-- CONTACT -->
+    <section id="contact" class="py-20 px-6 bg-gray-100 ">
+        <h1 class="text-3xl font-bold text-center ">Contacter nous </h1>
+        <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-lg p-10">
+
+            <div class="grid md:grid-cols-2 gap-6 mt">
+
+                <input type="text" id="contact-nom" placeholder="Votre nom"
+                    class="w-full border border-gray-300 rounded-xl px-4 py-3">
+
+                <input type="tel" id="contact-tel" placeholder="Téléphone"
+                    class="w-full border border-gray-300 rounded-xl px-4 py-3">
+
+                <textarea id="contact-message" rows="5" placeholder="Votre message"
+                    class="md:col-span-2 w-full border border-gray-300 rounded-xl px-4 py-3"></textarea>
+
+            </div>
+
+            <button onclick="envoyerMessageWhatsApp()"
+                class="mt-6 bg-orange-500 text-white px-10 py-4 rounded-full font-bold">
+
+                Envoyer →
+
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-black text-white py-16 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-10">
+            <div>
+                <h2 class="text-3xl font-bold text-orange-500">Dakar Food</h2>
+                <p class="text-gray-400 mt-4">Les meilleurs plats avec des ingrédients frais et de qualité.</p>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold mb-4">Horaires</h3>
+                <p class="text-gray-400">Lundi - Vendredi : 09h - 23h</p>
+                <p class="text-gray-400">Samedi : 10h - 23h</p>
+                <p class="text-gray-400">Dimanche : 10h - 22h</p>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold mb-4">Contact</h3>
+                <p class="text-gray-400">📞 +221 77 865 30 38</p>
+                <p class="text-gray-400">✉️ karimndiaye3038@gmail.com</p>
+                <p class="text-gray-400">📍 Dakar, Sénégal</p>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold mb-4">Scanner le menu</h3>
+                <!-- Remplace par ton fichier scaner.png quand tu publies --> <img src="scaner.png" alt="QR Code menu"
+                    class="rounded-xl" />
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-10 pt-6 text-center text-gray-500"> © 2026 Dakar Food - Tous droits
+            réservés. </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
