@@ -227,9 +227,9 @@ document
     // MESSAGE
     let message = `Bonjour Dakar Food 👋%0A%0A`;
 
-    message += `👤 Nom : ${nom}%0A`;
-    message += `📞 Téléphone : ${telephone}%0A`;
-    message += `💬 Message : ${messageClient}%0A`;
+    message += ` Nom : ${nom}%0A`;
+    message += ` Téléphone : ${telephone}%0A`;
+    message += ` Message : ${messageClient}%0A`;
 
     // URL WHATSAPP
     const url = `https://wa.me/${numero}?text=${message}`;
@@ -247,3 +247,25 @@ document
     
 //fin de l'animation du navbar
 
+   
+    const menuBtn = document.getElementById("menu-btn");
+    const closeMenu = document.getElementById("close-menu");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const mobileLinks = document.querySelectorAll(".mobile-link");
+
+    // Ouvrir menu
+    menuBtn.addEventListener("click", () => {
+        mobileMenu.classList.remove("hidden");
+    });
+
+    // Fermer menu (bouton X)
+    closeMenu.addEventListener("click", () => {
+        mobileMenu.classList.add("hidden");
+    });
+
+    // Fermer menu quand on clique sur un lien
+    mobileLinks.forEach(link => {
+        link.addEventListener("click", () => {
+            mobileMenu.classList.add("hidden");
+        });
+    });
