@@ -34,6 +34,7 @@ function ajouterAuPanier(nom, prix) {
         });
 
     }
+    alert('vous avez ajouter sur le panier un produit')
 
     afficherPanier();
 
@@ -136,10 +137,10 @@ function commander() {
     const numero = "221778653038";
 
     let message =
-        "🍔 Bonjour Dakar Food,%0A%0A";
+        "🍔 Bonjour Dakar Food,";
 
     message +=
-        "Je souhaite commander :%0A%0A";
+        "Je souhaite commander ";
 
     let total = 0;
 
